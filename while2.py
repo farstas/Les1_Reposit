@@ -7,5 +7,6 @@ def find_person(name):
 			print('{} нашелся'.format(name))
 			return
 	print('{} в списке нет'.format(name))
+	print('{} в списке нет'.format(name))
 
 find_person('Саша')
