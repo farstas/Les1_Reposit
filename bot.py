@@ -1,29 +1,39 @@
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 import logging
-logging.basicConfig(format='%(name)s - %(levelname)s - %(message)s',
+from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
+
+logging.basicConfig(format='%(asctime)s - %(levelname)s - %(message)s',
                     level=logging.INFO,
-                    filename='bot.log')
+                    filename='bot.log'
+                    )
 
-def main():
-	updater=Updater('372869028:AAHOviCWh1OTpbYSN7okwwZ0rGSAIzITp6k')
-	dp = updater.dispatcher
-	dp.add_handler(CommandHandler("start", greet_user))
-	dp.add_handler(MessageHandler(Filters.text, talk_to_me))
-	updater.start_polling()
-	updater.idle()
 
-def greet_user(bot,update):
-	text='Властелин приветствует тебя'
+def start_bot(bot, update):
+	mytext = '''Привет {}!
+
+Я протой бот и понимаю только команду /start
+	'''.format(update.message.chat.first_name)
+	update.message.reply_text(mytext)
+
+def chat(bot, update):
+	text = update.message.text
+	logging.info(text)
 	print(text)
 	update.message.reply_text(text)
-	print(update)
 
-def talk_to_me(bot, update):
-	user_text = update.message.text
-	print(user_text)
-	update.message.reply_text(user_text)
+def main():
+	updtr = Updater('372869028:AAHOviCWh1OTpbYSN7okwwZ0rGSAIzITp6k')
+	
+	updtr.dispatcher.add_handler(CommandHandler('start', start_bot))
+	updtr.dispatcher.add_handler(MessageHandler(Filters.text, chat))
 
-main()
+	updtr.start_polling()
+	updtr.idle()
+
+
+
+if __name__=='__main__':
+	logging.info('Bot started')
+	main()
 
 
 
