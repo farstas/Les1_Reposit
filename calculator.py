@@ -22,3 +22,6 @@ def calculator_bot(bot, update, args):
                 del user_text[index - 1]
                 del user_text[index]
                 print(user_text[index])
+
+
+logging.info(text)
