@@ -6,6 +6,9 @@ from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 dict = {}
 import settings
 
+from win_unicode_console import enable
+enable()
+
 logging.basicConfig(format='%(asctime)s - %(levelname)s - %(message)s',
 					level=logging.INFO,
 					filename='bot.log'
@@ -19,9 +22,12 @@ def start_bot(bot, update):
 	bot.send_message(chat_id = update.message.chat.id, text = "Нажмите интересующую вас опцию или Esc для выхода из меню", reply_markup = reply_markup)
 	logging.info('Пользователь {} нажал /start'.format(update.message.chat.username))
 
+
+
 def chat(bot, update):
 	text = update.message.text
 	chat_id = update.message.chat.id
+	print(text)
 
 	if text in ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '+', '-', '*', '÷']:
 		 if dict.get(chat_id) == None:
@@ -61,11 +67,6 @@ def chat(bot, update):
 			bot.send_message(chat_id, 'Проверьте корректность ввода данных для расчет!')
 			del dict[chat_id]
 
-
-
-
-		#работа функции + послать сообщение + del dict[chat_id]
-
 	elif text == 'Esc':
 		clear_keyboards(bot,chat_id)
 
@@ -90,7 +91,7 @@ def calculator_bot(bot, update, args):
 
 def clear_keyboards(bot, userssss_id):
 	reply_markup = telegram.ReplyKeyboardRemove(remove_keyboard=True)
-	bot.send_message(chat_id = userssss_id, text = "Наберите новую команду: /s /calculator /wordcount", reply_markup = reply_markup)
+	bot.send_message(chat_id = userssss_id, text = "Для выхода в основное меню наберите команду: /menu", reply_markup = reply_markup)
 
 	
 
