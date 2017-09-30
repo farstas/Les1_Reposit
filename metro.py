@@ -8,7 +8,7 @@ with open('metro_2017_09_06.csv', 'r', encoding = 'utf-8') as f:
     for row in reader:
         list_station.append(row)
 
-time_now = datetime.now() - timedelta(days = 1)*30
+time_now = datetime.now() - timedelta(days = 60)
 
 
 

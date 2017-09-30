@@ -3,11 +3,14 @@ from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 
 import telegram
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
-dict = {}
 import settings
+from collections import defaultdict
+
 
 from win_unicode_console import enable
 enable()
+
+dict_calc = defaultdict(str)
 
 logging.basicConfig(format='%(asctime)s - %(levelname)s - %(message)s',
 					level=logging.INFO,
@@ -30,13 +33,10 @@ def chat(bot, update):
 	print(text)
 
 	if text in ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '+', '-', '*', '÷']:
-		 if dict.get(chat_id) == None:
-		 	dict[chat_id] = text
-		 else:
-		 	dict[chat_id] += text
+		dict_calc[chat_id] += text
 		 			 			 	
 	elif text == '=':
-		clc = dict.get(chat_id)
+		clc = dict_calc.get(chat_id)
 		clc = clc.replace('*' , ' * ')
 		clc = clc.replace('÷' , ' ÷ ')
 		clc = clc.replace('+' , ' + ')
@@ -46,26 +46,26 @@ def chat(bot, update):
 		if clc[1] == '*':
 			result = int(clc[0]) * int(clc[2])
 			bot.send_message(chat_id, 'Результат вычисления: {} * {} = {}'.format(clc[0], clc[2], result))
-			del dict[chat_id]
+			del dict_calc[chat_id]
 		elif clc[1] == '+':
 			result = int(clc[0]) + int(clc[2])
 			bot.send_message(chat_id, 'Результат вычисления: {} + {} = {}'.format(clc[0], clc[2], result))
-			del dict[chat_id]
+			del dict_calc[chat_id]
 		elif clc[1] == '-':
 			result = int(clc[0]) - int(clc[2])
 			bot.send_message(chat_id, 'Результат вычисления: {} - {} = {}'.format(clc[0], clc[2], result))
-			del dict[chat_id]
+			del dict_calc[chat_id]
 		elif clc[1] == '÷':
 			try:
 				result = int(clc[0]) / int(clc[2])
 				bot.send_message(chat_id, 'Результат вычисления: {} / {} = {}'.format(clc[0], clc[2], result))
-				del dict[chat_id]
+				del dict_calc[chat_id]
 			except (ZeroDivisionError):
 				bot.send_message(chat_id, 'Ошибка деления на ноль. Проверьте корректность ввода данных!')
-				del dict[chat_id]
+				del dict_calc[chat_id]
 		else:
 			bot.send_message(chat_id, 'Проверьте корректность ввода данных для расчет!')
-			del dict[chat_id]
+			del dict_calc[chat_id]
 
 	elif text == 'Esc':
 		clear_keyboards(bot,chat_id)
